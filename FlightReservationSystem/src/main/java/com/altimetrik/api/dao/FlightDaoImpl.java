@@ -25,8 +25,8 @@ public class FlightDaoImpl implements FlightDao {
 		Flight flight = null;
 		
 		try {
-			sqlRowSet = jdbcTemplate.queryForRowSet(SEARCH_FLIGHT_DETAILS,
-					new Object[] { sourceCity, destinationCity, travelDate, returnDate });
+			sqlRowSet = jdbcTemplate.queryForRowSet(SEARCH_FLIGHT_DETAILS, new Object[] { sourceCity, destinationCity, travelDate, returnDate });
+			
 			while (sqlRowSet.next()) {
 				flight = new Flight();
 				flight.setAirLineName(sqlRowSet.getString("airLineName"));

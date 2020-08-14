@@ -75,6 +75,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>flight-reservation-system-docker</finalName>
 	</build>
 
 </project>

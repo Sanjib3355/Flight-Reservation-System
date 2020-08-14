@@ -2,16 +2,18 @@ package com.altimetrik.api.controller;
 
 import java.util.List;
 
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.json.JSONException;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,32 +27,28 @@ public class FlightController {
 
 	@Autowired
 	private FlightServiceImpl flightServiceImpl;
-
+		
 	@SuppressWarnings("unchecked")
-	@Produces(MediaType.APPLICATION_JSON)
-	@RequestMapping(value = "/getflightdetails", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> searchFlightDetails(String sourceCity, String destinationCity,
-			String travelDate, String returnDate) throws Exception { // This method will search all the details of a
-																		// flight according to sourceCity,
-																		// destinationCity, travelDate and returnDate.
-
+	@RequestMapping(value = "/getflightdetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON)
+	public @ResponseBody ResponseEntity<String> searchFlightDetails(@RequestParam ("sourceCity") String sourceCity,
+			@RequestParam("destinationCity") String destinationCity, @RequestParam("travelDate") String travelDate,
+			@RequestParam("returnDate") String returnDate) throws Exception { // This method will search all the details of a flight 
+		                                                                   // according to sourceCity, destinationCity, travelDate and returnDate.
 		List<Flight> listOFlightSearchResults = null;
 		JSONObject listOfFlightSearchResultsJson = new JSONObject();
 		ObjectMapper flightDetailsJsonMapper = null;
 
 		try {
-			if (((sourceCity != null) && (!sourceCity.isEmpty()))
-					&& ((destinationCity != null) && (!destinationCity.isEmpty()))
-					&& ((travelDate != null) && (!travelDate.isEmpty()))
-					&& ((returnDate != null) && (!returnDate.isEmpty()))) {
+			if (((sourceCity != null) && (!sourceCity.isEmpty())) && ((destinationCity != null) && (!destinationCity.isEmpty()))
+					&& ((travelDate != null) && (!travelDate.isEmpty())) && ((returnDate != null) && (!returnDate.isEmpty()))) {
 
 				flightDetailsJsonMapper = new ObjectMapper();
-				
+
 				listOFlightSearchResults = flightServiceImpl.searchFlightDetails(sourceCity, destinationCity, travelDate, returnDate);
 				listOfFlightSearchResultsJson.put("message", "SUCCESS");
 				listOfFlightSearchResultsJson.put("statusCode", HttpStatus.OK);
-				listOfFlightSearchResultsJson.put("result",flightDetailsJsonMapper.writeValueAsString(listOFlightSearchResults));
-				
+				listOfFlightSearchResultsJson.put("result", flightDetailsJsonMapper.writeValueAsString(listOFlightSearchResults));
+
 			} else {
 				if (sourceCity == null || sourceCity.isEmpty()) {
 					listOfFlightSearchResultsJson.put("message", "Source City Can not be Empty");
@@ -71,6 +69,6 @@ public class FlightController {
 				// log.error("JSONException in searchFlightDetails:- " + je);
 			}
 		}
-		return new ResponseEntity<String>(listOfFlightSearchResultsJson.toString(), HttpStatus.OK);
+		return new ResponseEntity<String>(String.valueOf(listOfFlightSearchResultsJson), HttpStatus.OK);
 	}
 }
