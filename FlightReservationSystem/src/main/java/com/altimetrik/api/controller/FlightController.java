@@ -33,7 +33,7 @@ public class FlightController {
 	public @ResponseBody ResponseEntity<String> searchFlightDetails(@RequestParam ("sourceCity") String sourceCity,
 			@RequestParam("destinationCity") String destinationCity, @RequestParam("travelDate") String travelDate,
 			@RequestParam("returnDate") String returnDate) throws Exception { // This method will search all the details of a flight 
-		                                                                   // according to sourceCity, destinationCity, travelDate and returnDate.
+		                                                                     // according to sourceCity, destinationCity, travelDate and returnDate.
 		List<Flight> listOFlightSearchResults = null;
 		JSONObject listOfFlightSearchResultsJson = new JSONObject();
 		ObjectMapper flightDetailsJsonMapper = null;
